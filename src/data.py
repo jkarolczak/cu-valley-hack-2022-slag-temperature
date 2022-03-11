@@ -82,8 +82,9 @@ def main(args) -> int:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--window_size', type=int, default=60, help="window size")
-    parser.add_argument('--data_dir', type=str, default="../resources/data", help="path to the directory with the input files")
-    parser.add_argument('--output_file', type=str, default="../resources/aggregated.csv", help="path to the file to store the generated data")
+    parser.add_argument('--data_dir', type=str, default="../resources/data",
+                        help="path to the directory with the input files")
+    parser.add_argument('--output_file', type=str, default="../resources/aggregated.csv",
+                        help="path to the file to store the generated data")
     arguments = parser.parse_args()
     main(arguments)
-
