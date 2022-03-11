@@ -1,0 +1,13 @@
+model:
+  name: xgboost
+  config_file: ../resources/cfg/models/xgboost.yaml
+dataset:
+  directory: ../resources/dataset
+  filenames:
+    train: train.csv
+    test: test.csv
+  columns:
+    time: czas
+    temperature: temp
+serialization:
+  directory: ../output/models

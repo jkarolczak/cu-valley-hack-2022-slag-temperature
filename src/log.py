@@ -1,4 +1,4 @@
-from typing import Union, List
+from typing import Union, List, Dict
 
 import neptune.new as neptune
 import yaml
@@ -17,3 +17,13 @@ def get_run(secrets_path: str = "cfg/neptune.yaml", tags: Union[List[str], None]
         tags=tags if tags is not None else []
     )
     return run
+
+
+def model(run: neptune.Run, regressor: str, config: Dict) -> None:
+    run["model"] = regressor
+    for key, value in config.items():
+        run[key] = value
+
+
+def mae(run: neptune.Run, loss: float) -> None:
+    run["mae"] = loss
