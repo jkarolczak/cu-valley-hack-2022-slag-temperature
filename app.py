@@ -26,7 +26,7 @@ test_data.sort_values("czas", inplace=True)
 st.title("Panel sterowania")
 
 
-def draw_plot(time_window, step):
+def draw_plot(plot, time_window, step):
     fig = px.line(test_data.iloc[step:step + time_window], x="czas", y="temp", markers=True,
                   labels={
                      "czas": "Czas",
@@ -41,17 +41,10 @@ test_data = pd.read_csv("resources/holdout.csv")
 test_data.sort_values("czas", inplace=True)
 
 time_window = st.slider("okno czasowe", min_value=3, max_value=100, value=15)
-
 plot = st.empty()
 
-for i in range(950):
-    draw_plot(time_window, i)
-    sleep(2)
-
-
-
 with st.empty():
-    for timestamp, temp in zip(test_data['czas'], test_data['temp']):
+    for i, (timestamp, temp) in enumerate(zip(test_data['czas'], test_data['temp'])):
         timestamp = datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S')
         col1, col2, col3, col4 = st.columns(4)
         col1.metric("Data", timestamp.strftime('%d/%m/%y'))
@@ -64,5 +57,9 @@ with st.empty():
             col4.metric("", "❌")
         else:
             col4.metric("", "✅")
+
         last_temp = temp
+        draw_plot(plot, time_window, i)
         time.sleep(3)
+
+
