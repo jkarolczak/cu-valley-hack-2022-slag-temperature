@@ -1,6 +1,13 @@
 # Data
 *.csv
 resources/data/
+
+# Serialized models
+*.pkl
+output/
+
+# Neptune
+scripts/.neptune
 resources/cfg/neptune.yaml
 
 # Pycharm

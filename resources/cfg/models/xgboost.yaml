@@ -1,0 +1,4 @@
+booster: gbtree
+max_depth: 10
+learning_rate: 3e-1
+tree_method: auto

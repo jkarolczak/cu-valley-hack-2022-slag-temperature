@@ -1,7 +1,7 @@
-import argparse
 import gzip
 import os
 import re
+from typing import Dict, Tuple
 
 import pandas as pd
 
@@ -69,22 +69,20 @@ def aggregate_inputs(df_features: pd.DataFrame, df_temperature: pd.DataFrame, wi
             df_aggregated = window_stats
         else:
             df_aggregated = pd.concat([df_aggregated, window_stats])
-    df_aggregated = df_aggregated.reset_index()
+    df_aggregated = df_aggregated.reset_index(drop=True).iloc[:-1]
     return df_aggregated
 
 
-def main(args) -> int:
-    df_features, df_temperature = read_inputs(args.data_dir)
-    aggregated = aggregate_inputs(df_features, df_temperature, window_size=args.window_size)
-    aggregated.to_csv(args.output_file, index=False)
+def read_datasets(config: Dict) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    train_path = os.path.join(config["directory"], config["filenames"]["train"])
+    test_path = os.path.join(config["directory"], config["filenames"]["test"])
 
+    validate_path([train_path, test_path])
+    train, test = pd.read_csv(train_path), pd.read_csv(test_path)
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--window_size', type=int, default=60, help="window size")
-    parser.add_argument('--data_dir', type=str, default="../resources/data",
-                        help="path to the directory with the input files")
-    parser.add_argument('--output_file', type=str, default="../resources/aggregated.csv",
-                        help="path to the file to store the generated data")
-    arguments = parser.parse_args()
-    main(arguments)
+    X_train = train[set(train.columns).difference(config["columns"].values())]
+    X_test = train[set(train.columns).difference(config["columns"].values())]
+
+    y_train = train[config["columns"]["temperature"]]
+    y_test = train[config["columns"]["temperature"]]
+    return X_train, X_test, y_train, y_test
