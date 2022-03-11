@@ -1,0 +1,5 @@
+# copy this file, rename to neptune.yaml and substitute the placeholder below with your api token.
+# https://docs.neptune.ai/getting-started/installation#authentication-neptune-api-token
+project: LIGANDS/CU-VALLEY-2022
+api_token: <api-token>
+debug: true

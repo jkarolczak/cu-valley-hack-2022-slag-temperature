@@ -1,3 +1,11 @@
+# Data
+*.csv
+resources/data/
+resources/cfg/neptune.yaml
+
+# Pycharm
+.idea
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
