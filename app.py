@@ -40,13 +40,16 @@ def draw_plot(plot, time_window, step):
 test_data = pd.read_csv("resources/holdout.csv")
 test_data.sort_values("czas", inplace=True)
 
+container = st.empty()
+
 time_window = st.slider("okno czasowe", min_value=3, max_value=100, value=15)
 plot = st.empty()
 
-with st.empty():
+with container.empty():
     for i, (timestamp, temp) in enumerate(zip(test_data['czas'], test_data['temp'])):
+        col1, col2, col3, col4 = container.columns(4)
         timestamp = datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S')
-        col1, col2, col3, col4 = st.columns(4)
+
         col1.metric("Data", timestamp.strftime('%d/%m/%y'))
         col2.metric("Czas", timestamp.strftime('%H:%M'))
         if "last_temp" in locals():
