@@ -1,18 +1,20 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import plotly.express as px
 import pickle
 import shap
-import streamlit.components.v1 as components
-from PIL import Image
 import time
-from datetime import datetime
 
-if 'time' not in st.session_state:
+import streamlit.components.v1 as components
+import plotly.express as px
+
+from datetime import datetime
+from PIL import Image
+
+if 'time' not in st.session_state:  # monitor time change
     st.session_state['time'] = 0
 
-favicon = Image.open('resources/coin.png')
+favicon = Image.open('static/coin.png')
 st.set_page_config(
     page_title="Miedź na oku",
     page_icon=favicon,
@@ -20,18 +22,15 @@ st.set_page_config(
     # initial_sidebar_state="expanded"
 )
 
-test_data = pd.read_csv("resources/mockup_data.csv")
-test_data.sort_values("czas", inplace=True)
+test_data = pd.read_csv("static/mockup_data.csv")
 
 model = pickle.load(open("static/model.pkl", 'rb'))
 explainer = shap.Explainer(model)
 
-for i, row in test_data[:60].iterrows():
+for i, row in test_data[:30].iterrows():  # calculate temp for the first 30 minutes
     model_input = pd.DataFrame(row.drop(["czas", "temp"]), dtype=np.float64).transpose()
     temp = np.round(model.predict(model_input)[0])
     test_data.at[i, "temp"] = temp
-
-st.title("Panel kontrolny")
 
 
 def draw_plot(plot, time_window, step):
@@ -61,20 +60,25 @@ def parse_columns(df: pd.DataFrame) -> pd.DataFrame:
     for col in df.columns:
         new_cols[col] = col.split("_", 1)[0]
     df = df.rename(columns=new_cols)
-    tagnames = xlsx_to_dict('resources/nametags.txt')
+    tagnames = xlsx_to_dict('static/nametags.txt')
     df = df.rename(columns=tagnames)
     return df
 
 
-container = st.empty()
-time_window = st.slider("Przedział pobierania pomiarów w minutach", min_value=3, max_value=60, value=30)
-st.write('Temperatura żużlu wewnątrz pieca zawiesinowego Huty Miedzi KGHM "Głogów II"')
-container_3 = st.empty()
-plot = st.empty()
-st.write('Wpływ parametrów na temperaturę')
-container_2 = st.empty()
+st.title("Panel kontrolny")
 
-for i, row in test_data[30+(st.session_state.time)%29:].iterrows():
+container = st.empty()
+
+time_window = st.slider("Przedział pobierania pomiarów w minutach", min_value=3, max_value=60, value=30)
+
+st.write('Temperatura żużlu wewnątrz pieca zawiesinowego Huty Miedzi KGHM "Głogów II"')
+
+plot = st.empty()
+
+st.write('Wpływ parametrów na temperaturę')
+container_shap = st.empty()
+
+for i, row in test_data[30 + (st.session_state.time) % 29:].iterrows():
     st.session_state.time += 1
     with container.empty():
         col1, col2, col3, col4 = container.columns(4)
@@ -101,7 +105,7 @@ for i, row in test_data[30+(st.session_state.time)%29:].iterrows():
 
         draw_plot(plot, time_window, i)
 
-    with container_2.empty():
+    with container_shap.empty():
         shap_values = explainer(model_input)
         draw_shap(shap_values)
         time.sleep(5)
