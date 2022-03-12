@@ -1,0 +1,16 @@
+name: cu-valley-slug
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.8
+  - matplotlib
+  - neptune-client
+  - pandas
+  - pandas-profiling
+  - scikit-learn
+  - xgboost
+  - yaml
+  - shap
+  - streamlit
+  - plotly
