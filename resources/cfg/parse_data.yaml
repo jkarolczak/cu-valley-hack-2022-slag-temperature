@@ -1,4 +1,4 @@
 data_dir: ../resources/data
-window_size: 60
-output_file: ../resources/dataset_60.csv
+window_size: 30
+output_file: ../resources/dataset_30_extended.csv
 train_cfg: ../resources/cfg/train.yaml

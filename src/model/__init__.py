@@ -1,6 +1,7 @@
 from typing import Dict
 
 from ._infer import infer
+from ._lgbm import get_lgbm
 from ._serialize import serialize
 from ._sklearn import get_bayesian_ridge, get_lasso, get_random_forest, get_svr, get_tweedie_regressor, \
     get_decision_tree
@@ -10,6 +11,7 @@ from ._xgboost import get_xgboost
 MODELS = {
     "bayesianridge": get_bayesian_ridge,
     "lasso": get_lasso,
+    "lgbm": get_lgbm,
     "randomforest": get_random_forest,
     "svr": get_svr,
     "decisiontree": get_decision_tree,

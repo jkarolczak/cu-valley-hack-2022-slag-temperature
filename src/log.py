@@ -30,5 +30,6 @@ def dataset(run: neptune.Run, window_size: int, features: int) -> None:
     run["features"] = features
 
 
-def mae(run: neptune.Run, loss: float) -> None:
-    run["mae"] = loss
+def metrics(run: neptune.Run, metrics: Dict[str, float]) -> None:
+    for key, value in metrics.items():
+        run[key].log(value)

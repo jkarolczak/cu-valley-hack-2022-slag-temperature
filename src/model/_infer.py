@@ -2,7 +2,7 @@ import pickle
 from typing import Dict
 
 import pandas as pd
-from sklearn.metrics import mean_absolute_error
+from sklearn.metrics import mean_absolute_error, mean_absolute_percentage_error
 
 from data import read_holdout
 
@@ -17,4 +17,6 @@ def infer(config: Dict) -> None:
 
     if config["show_metrics"]:
         mae = mean_absolute_error(predictions["temp"], y)
+        mape = mean_absolute_percentage_error(predictions["temp"], y)
         print(f"MAE: {mae}")
+        print(f"MAPE: {mape}")

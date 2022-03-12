@@ -1,4 +1,4 @@
 booster: gbtree
-max_depth: 10
-learning_rate: 3e-1
+max_depth: 15
+learning_rate: 2e-1
 tree_method: auto

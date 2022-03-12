@@ -3,11 +3,11 @@ dataset:
     temperature: temp
     time: czas
   directory: ../resources/dataset
-  features: 176
+  features: 20
   filenames:
     test: test.csv
-    train: train.csv
-  window_size: 5
+    train: ../dataset_30_small.csv
+  window_size: 30
 model:
   config_file: ../resources/cfg/models/XGBoost.yaml
   name: XGBoost
