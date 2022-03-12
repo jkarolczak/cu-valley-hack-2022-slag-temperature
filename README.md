@@ -6,7 +6,7 @@
     1. Sklonuj to repozytorium <br> ```git clone https://github.com/jkarolczak/cu-valley-hack-2022-slag-temperature.git```
     2. Przejdź do sklonowanego repozytorium <br> ```cd cu-valley-hack-2022-slag-temperature```
 2. Przygotuj środowisko wykonawcze:
-    1. Utwórz środowisko przy użyciu menedźera Conda uruchamiając polecenie <br>```conda env create environment.yaml```
+    1. Utwórz środowisko przy użyciu menedźera Conda uruchamiając polecenie <br>```conda env create -f environment.yaml```
     2. Aktywuj utworzone środowisko wykonując polecenie <br>```conda activate cu-valley-slag```
 3. Przygotowanie danych:
     1. Skopiuj archiwum zawierające dane do przeprowadzenia inferencji do
