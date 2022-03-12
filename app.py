@@ -10,29 +10,16 @@ import xgboost
 import pickle
 import shap
 import streamlit.components.v1 as components
-
-# import warnings
-# warnings.filterwarnings('ignore') # https://github.com/streamlit/streamlit/issues/1430
 import time
 from datetime import datetime
 import warnings
 
-#warnings.filterwarnings('ignore') # https://github.com/streamlit/streamlit/issues/1430
 
-# csv_file = st.file_uploader(label="Wprowadź dane")
-# if csv_file:
-#     if not csv_file.name.endswith(".csv"):
-#         st.error("Proszę wprowadzić plik z rozszerzeniem csv")
-#     else:
-
-
-test_data = pd.read_csv("resources/holdout.csv")
+test_data = pd.read_csv("resources/mockup_data.csv")
 test_data.sort_values("czas", inplace=True)
 
 model = pickle.load(open("resources/cuv-62.pkl", 'rb'))
 explainer = shap.Explainer(model)
-# model_data = test_data.drop(["czas", "temp"], axis=1)
-# shap_values = explainer(model_data)
 
 st.title("Panel sterowania")
 

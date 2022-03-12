@@ -1,20 +1,28 @@
 import argparse
 
+import cfg
+from common import validate_path
 from data import aggregate_inputs, read_inputs
 
 
 def main(args: argparse.Namespace) -> None:
-    df_features, df_temperature = read_inputs(args.data_dir)
-    aggregated = aggregate_inputs(df_features, df_temperature, window_size=args.window_size)
-    aggregated.to_csv(args.output_file, index=False)
+    config = cfg.read(args.cfg)
+
+    validate_path(config["data_dir"])
+    df_features, df_temperature = read_inputs(config["data_dir"])
+
+    aggregated = aggregate_inputs(df_features, df_temperature, window_size=config["window_size"])
+    aggregated.to_csv(config["output_file"], index=False)
+
+    validate_path(config["train_cfg"])
+    train_cfg = cfg.read(config["train_cfg"])
+    train_cfg["dataset"]["window_size"] = config["window_size"]
+    cfg.write(train_cfg, config["train_cfg"])
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('--window_size', type=int, default=60, help="window size")
-    parser.add_argument('--data_dir', type=str, default="../resources/data",
-                        help="path to the directory with the input files")
-    parser.add_argument('--output_file', type=str, default="../resources/aggregated.csv",
-                        help="path to the file to store the generated data")
+    parser.add_argument('--cfg', type=str, default="../resources/cfg/parse_data.yaml",
+                        help="path to the file containing data parsing configuration")
     arguments = parser.parse_args()
     main(arguments)

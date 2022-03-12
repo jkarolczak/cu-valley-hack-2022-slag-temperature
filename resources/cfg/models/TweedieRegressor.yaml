@@ -1,0 +1,4 @@
+power: 0
+alpha: 1.0
+max_iter: 100
+tol: 0.0001

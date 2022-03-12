@@ -20,10 +20,16 @@ def get_run(secrets_path: str = "cfg/neptune.yaml", tags: Union[List[str], None]
 
 
 def model(run: neptune.Run, regressor: str, config: Dict) -> None:
-    run["model"] = regressor
+    run["model/name"] = regressor
     for key, value in config.items():
-        run[key] = value
+        run[f"model/{key}"] = value
 
 
-def mae(run: neptune.Run, loss: float) -> None:
-    run["mae"] = loss
+def dataset(run: neptune.Run, window_size: int, features: int) -> None:
+    run["window_size"] = window_size
+    run["features"] = features
+
+
+def metrics(run: neptune.Run, metrics: Dict[str, float]) -> None:
+    for key, value in metrics.items():
+        run[key].log(value)

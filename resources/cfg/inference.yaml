@@ -1,0 +1,7 @@
+holdout_path: ../resources/dataset/holdout.csv
+predictions_path: ../output/predictions.csv
+model_path: ../output/models/2022-03-12-02:07:49.136233-decisiontree.pkl
+show_metrics: true
+columns:
+  temperature: temp
+  time: czas
