@@ -1,12 +1,12 @@
 shuffle: true
 paths:
-  dataset: ../resources/dataset_60.csv
+  dataset: ../resources/dataset_5_small.csv
   output: ../resources/dataset
 filenames:
   train: train.csv
   test: test.csv
   holdout: holdout.csv
 sizes:
-  train: 0.6
-  test: 0.2
-  holdout: 0.2
+  train: 0.7
+  test: 0.15
+  holdout: 0.15

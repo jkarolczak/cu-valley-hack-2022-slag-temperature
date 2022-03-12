@@ -4,7 +4,9 @@ import re
 from typing import Dict, Tuple
 
 import pandas as pd
+from sklearn.model_selection import train_test_split
 
+import cfg
 from common import validate_path
 
 
@@ -73,16 +75,63 @@ def aggregate_inputs(df_features: pd.DataFrame, df_temperature: pd.DataFrame, wi
     return df_aggregated
 
 
-def read_datasets(config: Dict) -> Tuple[pd.DataFrame, pd.DataFrame]:
+def read_datasets(config: Dict) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     train_path = os.path.join(config["directory"], config["filenames"]["train"])
     test_path = os.path.join(config["directory"], config["filenames"]["test"])
 
     validate_path([train_path, test_path])
     train, test = pd.read_csv(train_path), pd.read_csv(test_path)
 
-    X_train = train[set(train.columns).difference(config["columns"].values())]
-    X_test = train[set(train.columns).difference(config["columns"].values())]
+    X_train = train.drop(columns=[config["columns"]["time"], config["columns"]["temperature"]])
+    X_test = test.drop(columns=[config["columns"]["time"], config["columns"]["temperature"]])
 
     y_train = train[config["columns"]["temperature"]]
-    y_test = train[config["columns"]["temperature"]]
+    y_test = test[config["columns"]["temperature"]]
     return X_train, X_test, y_train, y_test
+
+
+def read_holdout(config: Dict) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    validate_path(config["holdout_path"])
+    holdout = pd.read_csv(config["holdout_path"])
+
+    y = holdout[config["columns"]["temperature"]]
+    time = holdout[config["columns"]["time"]]
+    X = holdout.drop(columns=[config["columns"]["time"], config["columns"]["temperature"]])
+
+    return X, y, time
+
+
+def split_dataset(config: Dict) -> None:
+    if sum([v for v in config["sizes"].values()]) != 1:
+        raise ValueError("Sizes of all datasets have to sum-up to 1.0")
+
+    train_size = config["sizes"]["train"]
+    test_size = config["sizes"]["test"] / (config["sizes"]["test"] + config["sizes"]["holdout"])
+
+    df = pd.read_csv(config["paths"]["dataset"])
+
+    df_train, df = train_test_split(df, train_size=train_size, shuffle=config["shuffle"])
+    df_test, df_holdout = train_test_split(df, train_size=test_size, shuffle=config["shuffle"])
+
+    os.makedirs(config["paths"]["output"], exist_ok=True)
+
+    df_train.reset_index(drop=True).to_csv(os.path.join(config["paths"]["output"], config["filenames"]["train"]),
+                                           index=False)
+    df_test.reset_index(drop=True).to_csv(os.path.join(config["paths"]["output"], config["filenames"]["test"]),
+                                          index=False)
+    df_holdout.reset_index(drop=True).to_csv(os.path.join(config["paths"]["output"], config["filenames"]["holdout"]),
+                                             index=False)
+
+
+def select_variables(config: Dict) -> None:
+    df_path = config["input_dataset_file"]
+    validate_path(df_path)
+    df = pd.read_csv(df_path)
+    num_columns = df.shape[1] - (len(config["columns"]) + 2)
+    df = df.drop(columns=config["columns"])
+    df.to_csv(config["output_dataset_file"], index=False)
+
+    validate_path(config["train_cfg"])
+    train_cfg = cfg.read(config["train_cfg"])
+    train_cfg["dataset"]["features"] = num_columns
+    cfg.write(train_cfg, config["train_cfg"])
