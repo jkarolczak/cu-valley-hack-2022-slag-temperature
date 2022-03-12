@@ -57,11 +57,14 @@ def draw_shap(shap_values):
 
 container = st.empty()
 
+
 plot = st.empty()
 time_window = st.slider("Okno czasowe", min_value=3, max_value=100, value=15)
 
-with container.empty():
-    for i, row in test_data.iterrows():
+container_2 = st.empty()
+
+for i, row in test_data.iterrows():
+    with container.empty():
         col1, col2, col3, col4 = container.columns(4)
         temp = row['temp']
         timestamp = datetime.strptime(row['czas'], '%Y-%m-%d %H:%M:%S')
@@ -82,10 +85,13 @@ with container.empty():
 
         test_data.at[i, "temp"] = model.predict(model_input)
 
-        shap_values = explainer(model_input)
-        draw_shap(shap_values)
-
         draw_plot(plot, time_window, i)
+    with container_2.empty():
+        shap_values = explainer(model_input)
+        draw_shap(shap_values)    
         time.sleep(5)
+        
+        
+
 
 
