@@ -1,4 +1,4 @@
-name: cu-valley-slug
+name: cu-valley-slag
 channels:
   - conda-forge
   - defaults
