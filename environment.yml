@@ -1,4 +1,4 @@
-name: /home/aleksandra/Hobby/cu-valley-hack-2022-slug-temperatue/env
+name: cu-valley-hack-2022-slag-temperature
 channels:
   - conda-forge
   - defaults
@@ -216,4 +216,4 @@ dependencies:
     - wcwidth==0.2.5
     - webencodings==0.5.1
     - widgetsnbextension==3.5.2
-prefix: /home/aleksandra/Hobby/cu-valley-hack-2022-slug-temperatue/env
+prefix: cu-valley-hack-2022-slag-temperature
