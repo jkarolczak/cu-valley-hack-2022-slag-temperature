@@ -1,4 +1,4 @@
-name: cu-valley-hack-2022-slag-temperature
+name: cu-valley-slag
 channels:
   - conda-forge
   - defaults
@@ -216,4 +216,4 @@ dependencies:
     - wcwidth==0.2.5
     - webencodings==0.5.1
     - widgetsnbextension==3.5.2
-prefix: cu-valley-hack-2022-slag-temperature
+prefix: cu-valley-slag
