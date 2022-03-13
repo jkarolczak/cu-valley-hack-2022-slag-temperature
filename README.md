@@ -30,7 +30,8 @@ streamlit run app.py
 ```
 
 Działające demo znajduje się na stronie [miedziaki.tech](http://miedziaki.tech)
-Przygotowany mockup imituje panel kontrolny operatora pieca zawiesinowego w KGHM Hucie Miedzi “Głogów II”. Panel ten
+Przygotowany mockup imituje panel kontrolny operatora pieca zawiesinowego w KGHM Hucie Miedzi “Głogów II”. 
+Obraz w mockupie zmienia się co pięć sekund, podczas gdy w działającym systemie działoby się to co minutę. 
 pokazuje jak w prosty sposób nasze rozwiązanie może zostać zintegrowane z już istniejącymi oraz wdrożonymi systemami.
 Dzięki takiej integracji operatorzy powinni łatwo zaadaptować nowe informacje. Prezentacja czynników wpływających na
 predykcję zwraca uwagę operatora na istotne zmiany parametrów procesowych. Co za tym idzie ryzyko błędu ludzkiego jest
